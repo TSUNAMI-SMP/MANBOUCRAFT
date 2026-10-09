@@ -155,6 +155,16 @@ public final class RuleListener implements Listener {
         if (event.getEntered() instanceof Player player && event.getVehicle() instanceof Boat) later(player, "boat_sickness");
     }
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void fall(org.bukkit.event.entity.EntityDamageEvent event) {
+        if (event.getCause() != org.bukkit.event.entity.EntityDamageEvent.DamageCause.FALL
+                || !(event.getEntity() instanceof Player player) || event.getFinalDamage() <= 0
+                || !plugin.eligible(player)) return;
+        // Observe the final damage without altering it. Recheck cancellation after all listeners.
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (!event.isCancelled() && event.getFinalDamage() > 0) plugin.fatalFall(player);
+        });
+    }
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void damage(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (event.getDamager() instanceof Egg) later(player, "egg_shock");

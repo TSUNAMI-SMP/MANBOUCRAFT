@@ -95,6 +95,71 @@ class PluginIntegrationTest {
         assertFalse(allowed.isCancelled());
         assertFalse(netherAllowed.isCancelled());
     }
+    private org.bukkit.event.entity.EntityDamageEvent fallEvent(PlayerMock player, double damage) {
+        return new org.bukkit.event.entity.EntityDamageEvent(player,
+                org.bukkit.event.entity.EntityDamageEvent.DamageCause.FALL,
+                org.bukkit.damage.DamageSource.builder(org.bukkit.damage.DamageType.FALL).build(), damage);
+    }
+    @Test void onePointOfFallDamageKillsEvenDuringJoinProtection() {
+        PlayerMock player = server.addPlayer();
+        server.getPluginManager().callEvent(fallEvent(player, 1));
+        server.getScheduler().performOneTick();
+        assertTrue(player.isDead());
+        YamlConfiguration data = YamlConfiguration.loadConfiguration(new java.io.File(plugin.getDataFolder(), "statistics.yml"));
+        assertEquals(1, data.getLong("players." + player.getUniqueId() + ".causes.fall_fragility"));
+    }
+    @Test void alreadyLethalVanillaFallAlsoGetsSpecialMessageAndStatistics() {
+        PlayerMock player = server.addPlayer("Manbou");
+        org.bukkit.damage.DamageSource source = org.bukkit.damage.DamageSource.builder(org.bukkit.damage.DamageType.FALL).build();
+        PlayerDeathEvent death = new PlayerDeathEvent(player, source, new ArrayList<>(), 0, Component.text("vanilla fall"), true);
+        server.getPluginManager().callEvent(death);
+        assertEquals("Manbouはたった一段の油断で骨も心も折れた。",
+                PlainTextComponentSerializer.plainText().serialize(death.deathMessage()));
+        YamlConfiguration data = YamlConfiguration.loadConfiguration(new java.io.File(plugin.getDataFolder(), "statistics.yml"));
+        assertEquals(1, data.getLong("players." + player.getUniqueId() + ".causes.fall_fragility"));
+    }
+    @Test void fractionalFallDamageAlsoKills() {
+        PlayerMock player = server.addPlayer();
+        server.getPluginManager().callEvent(fallEvent(player, .01));
+        server.getScheduler().performOneTick();
+        assertTrue(player.isDead());
+    }
+    @Test void zeroOrCancelledFallDamageDoesNotKill() {
+        PlayerMock player = server.addPlayer();
+        server.getPluginManager().callEvent(fallEvent(player, 0));
+        org.bukkit.event.entity.EntityDamageEvent cancelled = fallEvent(player, 1);
+        cancelled.setCancelled(true);
+        server.getPluginManager().callEvent(cancelled);
+        server.getScheduler().performOneTick();
+        assertEquals(20, player.getHealth());
+    }
+    @Test void laterCancellationPreventsQueuedFallDeath() {
+        PlayerMock player = server.addPlayer();
+        org.bukkit.event.entity.EntityDamageEvent event = fallEvent(player, 1);
+        server.getPluginManager().callEvent(event);
+        event.setCancelled(true);
+        server.getScheduler().performOneTick();
+        assertEquals(20, player.getHealth());
+    }
+    @Test void creativeAndDisabledFatalFallsDoNotKill() {
+        PlayerMock player = server.addPlayer();
+        player.setGameMode(org.bukkit.GameMode.CREATIVE);
+        server.getPluginManager().callEvent(fallEvent(player, 1));
+        server.getScheduler().performOneTick();
+        assertEquals(20, player.getHealth());
+        player.setGameMode(org.bukkit.GameMode.SURVIVAL);
+        plugin.getConfig().set("fatal-fall-damage", false);
+        server.getPluginManager().callEvent(fallEvent(player, 1));
+        server.getScheduler().performOneTick();
+        assertEquals(20, player.getHealth());
+    }
+    @Test void missingRequiredGravePreventsFallDeath() {
+        PlayerMock player = server.addPlayer();
+        plugin.getConfig().set("required-grave-plugin", "MissingGrave");
+        server.getPluginManager().callEvent(fallEvent(player, 1));
+        server.getScheduler().performOneTick();
+        assertEquals(20, player.getHealth());
+    }
     @Test void joinProtectionPreventsRuleAttempts() {
         PlayerMock player = server.addPlayer();
         assertFalse(plugin.attempt(player, "diamond_joy"));

@@ -1,4 +1,7 @@
 # Probabilities are 0.0..1.0 per eligible event/interval, never per tick.
+# Any positive final fall damage causes guaranteed death, even during respawn protection.
+fatal-fall-damage: true
+fatal-fall-message: "たった一段の油断で骨も心も折れた。"
 respawn-protection-seconds: 60
 message-color: auto
 suppress-overworld-hostiles: true

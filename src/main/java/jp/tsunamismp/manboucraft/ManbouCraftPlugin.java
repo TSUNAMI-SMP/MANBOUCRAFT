@@ -74,10 +74,33 @@ public class ManbouCraftPlugin extends JavaPlugin implements Listener {
                 && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)
                 && !pending.containsKey(player.getUniqueId());
     }
+    private boolean graveAvailable() {
+        String grave = getConfig().getString("required-grave-plugin", "");
+        return grave.isBlank() || Bukkit.getPluginManager().isPluginEnabled(grave);
+    }
+    void fatalFall(Player player) {
+        if (!eligible(player) || !graveAvailable() || !getConfig().getBoolean("fatal-fall-damage", true)) return;
+        // This is physical fragility, not a random rule: no respawn shield or probability roll.
+        executeDeath(player, fallRule());
+    }
+    private DeathRule fallRule() {
+        return new DeathRule("fall_fragility",
+                getConfig().getString("fatal-fall-message", "たった一段の油断で骨も心も折れた。"), 1, 1);
+    }
+    private DeathRule ruleForDeath(PlayerDeathEvent event) {
+        DeathRule special = pending.get(event.getEntity().getUniqueId());
+        if (special != null) return special;
+        GameMode mode = event.getEntity().getGameMode();
+        // A lethal vanilla fall finishes before the queued task. Attribute that death too.
+        if ((mode == GameMode.SURVIVAL || mode == GameMode.ADVENTURE)
+                && getConfig().getBoolean("fatal-fall-damage", true) && graveAvailable()
+                && event.getDamageSource() != null
+                && event.getDamageSource().getDamageType() == org.bukkit.damage.DamageType.FALL) return fallRule();
+        return null;
+    }
     public boolean attempt(Player player, String id) {
         DeathRule rule = rules.get(id);
-        String grave = getConfig().getString("required-grave-plugin", "");
-        if (!grave.isBlank() && !Bukkit.getPluginManager().isPluginEnabled(grave)) return false;
+        if (!graveAvailable()) return false;
         if (rule == null || !eligible(player)) return false;
         if (!gate.attempt(player.getUniqueId(), rule, now(), ThreadLocalRandom.current().nextDouble())) return false;
         executeDeath(player, rule);
@@ -98,7 +121,7 @@ public class ManbouCraftPlugin extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void deathMessage(PlayerDeathEvent event) {
         if (event.isCancelled()) return;
-        DeathRule rule = pending.get(event.getEntity().getUniqueId());
+        DeathRule rule = ruleForDeath(event);
         Component message = event.deathMessage();
         if (rule != null) {
             NamedTextColor[] colors = {NamedTextColor.LIGHT_PURPLE, NamedTextColor.AQUA, NamedTextColor.GREEN, NamedTextColor.GOLD};
@@ -115,7 +138,7 @@ public class ManbouCraftPlugin extends JavaPlugin implements Listener {
     }
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void recordDeath(PlayerDeathEvent event) {
-        DeathRule rule = pending.get(event.getEntity().getUniqueId());
+        DeathRule rule = ruleForDeath(event);
         statistics.record(event.getEntity().getUniqueId(), event.getEntity().getName(), rule == null ? null : rule.id());
         if (listener != null) listener.clear(event.getEntity().getUniqueId());
         // Never touch drops, inventory, keepInventory or experience here.

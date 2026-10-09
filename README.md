@@ -5,16 +5,25 @@ Paper **1.21.11** / Java **21** 向けのマンボウサバイバルプラグイ
 
 ## 導入
 
-[ManbouCraft-0.1.0.jar をダウンロード](https://github.com/TSUNAMI-SMP/MANBOUCRAFT/raw/refs/heads/main/dist/ManbouCraft-0.1.0.jar)
+[ManbouCraft-0.1.1.jar をダウンロード](https://github.com/TSUNAMI-SMP/MANBOUCRAFT/raw/refs/heads/main/dist/ManbouCraft-0.1.1.jar)
 
 1. サーバーを停止し、ワールドとプラグインデータをバックアップしてください。
-2. build/libs/ManbouCraft-0.1.0.jar を Paper 1.21.11 の plugins/ に入れて起動します。
+2. build/libs/ManbouCraft-0.1.1.jar を Paper 1.21.11 の plugins/ に入れて起動します。
 3. 生成された plugins/ManbouCraft/config.yml を編集して再起動します。
 4. required-grave-plugin に墓プラグインの plugin.yml 内の name を設定してください。設定したプラグインが無効なら特殊死亡は停止します。空欄では墓プラグインの存在確認を行いません。
 
 ManbouCraft は墓を実装せず、アイテム・経験値・死亡ドロップ・keepInventory を変更しません。
 墓プラグインがない場合、通常の死亡ドロップになります。墓の保管、座標通知、本人限定回収、
 再起動後の保持は採用した墓プラグインで設定してください。個別の墓プラグインとの併用試験は未実施です。
+
+## 落下即死（0.1.1）
+
+最終的な落下ダメージが少しでも正数なら確率100%で死亡します。1ダメージ（ハート半分）も、1未満も対象です。
+落下イベントをキャンセルした場合や最終ダメージ0の場合は対象外。Creative / Spectator も対象外です。
+この落下即死はリスポーン保護と確率抽選を迂回します。墓プラグインの必須チェックは維持します。
+死亡ログは「○○はたった一段の油断で骨も心も折れた。」、統計IDは fall_fragility です。
+fatal-fall-damage: false で無効化、fatal-fall-message で文章を変更できます。
+以前の config.yml に項目がなくても既定で有効です。JAR を差し替え、サーバーを再起動してください。
 
 ## 表示と保護
 
@@ -55,7 +64,7 @@ JDK 21 を使用して以下を実行します。
 
     ./gradlew build
 
-成果物は build/libs/ManbouCraft-0.1.0.jar、テスト結果は build/reports/tests/test/index.html。
+成果物は build/libs/ManbouCraft-0.1.1.jar、テスト結果は build/reports/tests/test/index.html。
 Gradle Wrapper 8.14.3 は配布ファイルのSHA-256を固定しています。
 自動テストは確率・保護時間・有効化・死亡メッセージ・死亡キャンセル・統計・ドロップ不変更・モブ制御を対象にしています。
 クライアントによる表示確認、30条件それぞれの実機再現、採用済み他プラグインとの併用は別途必要です。
