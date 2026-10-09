@@ -34,8 +34,8 @@ class DeathGateTest {
         assertThrows(IllegalArgumentException.class, () -> new DeathRule("bad", "message", 1.1, 1));
         assertThrows(IllegalArgumentException.class, () -> new DeathRule("bad", "message", 1, 0));
     }
-    @Test void thirtyRulesHaveStableUniqueIds() {
-        assertEquals(30, RuleRegistry.defaults().size());
+    @Test void expandedRulesHaveStableUniqueIds() {
+        assertEquals(55, RuleRegistry.defaults().size());
         assertTrue(RuleRegistry.defaults().values().stream().allMatch(rule -> rule.message().endsWith("。")));
     }
 }

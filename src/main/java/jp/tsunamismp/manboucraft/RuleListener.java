@@ -87,7 +87,7 @@ public final class RuleListener implements Listener {
         if (type != Material.COD && type != Material.SALMON) return;
         Player player = event.getPlayer();
         if (!plugin.eligible(player) || parasites.containsKey(player.getUniqueId())) return;
-        parasites.put(player.getUniqueId(), java.util.concurrent.ThreadLocalRandom.current().nextInt(30, 91));
+        parasites.put(player.getUniqueId(), java.util.concurrent.ThreadLocalRandom.current().nextInt(5, 16));
         saveState();
     }
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -180,14 +180,14 @@ public final class RuleListener implements Listener {
         double distance = from.distance(to);
         if (player.isSprinting() && !player.isInsideVehicle() && distance < 2) {
             double total = runDistance.getOrDefault(id, 0.0) + distance;
-            if (total >= 300) { total = 0; later(player, "sprinting"); }
+            if (total >= 80) { total = 0; later(player, "sprinting"); }
             runDistance.put(id, total);
         }
         if (player.isFlying() || player.isGliding() || player.isInsideVehicle()) { fallStart.remove(id); return; }
         if (to.getY() < from.getY() && !player.isInWater()) fallStart.putIfAbsent(id, from.getY());
         if (player.isInWater()) {
             Double start = fallStart.remove(id);
-            if (start != null && start - to.getY() >= 6) later(player, "water_impact");
+            if (start != null && start - to.getY() >= 3) later(player, "water_impact");
         } else if (player.isOnGround()) fallStart.remove(id);
     }
     private boolean sustained(Map<UUID, Long> map, UUID id, boolean condition, long time, long duration) {
@@ -212,7 +212,7 @@ public final class RuleListener implements Listener {
             boolean freezing = loc.getBlock().getTemperature() < .2;
             Boolean previousCold = cold.put(id, freezing);
             if (previousCold != null && previousCold != freezing) plugin.attempt(player, "temperature_shock");
-            if (sustained(rainSince, id, world.hasStorm() && exposed && !freezing && world.getEnvironment() == World.Environment.NORMAL, time, 60_000))
+            if (sustained(rainSince, id, world.hasStorm() && exposed && !freezing && world.getEnvironment() == World.Environment.NORMAL, time, 10_000))
                 plugin.attempt(player, "rain_stress");
             if (world.isThundering() && exposed) plugin.attempt(player, "thunder_fear");
             boolean contact = false, villager = false, chicken = false;
@@ -223,8 +223,8 @@ public final class RuleListener implements Listener {
                         && player.hasLineOfSight(nearby)) villager = true;
                 if (nearby instanceof Chicken && squared < 9) chicken = true;
             }
-            if (sustained(contactSince, id, contact, time, 2_000)) plugin.attempt(player, "player_contact");
-            if (sustained(villagerSince, id, villager, time, 5_000)) plugin.attempt(player, "villager_stare");
+            if (sustained(contactSince, id, contact, time, 1_000)) plugin.attempt(player, "player_contact");
+            if (sustained(villagerSince, id, villager, time, 2_000)) plugin.attempt(player, "villager_stare");
             if (chicken) plugin.attempt(player, "chicken_stare");
             int occupied = 0;
             for (ItemStack item : player.getInventory().getStorageContents()) if (item != null && !item.getType().isAir()) occupied++;

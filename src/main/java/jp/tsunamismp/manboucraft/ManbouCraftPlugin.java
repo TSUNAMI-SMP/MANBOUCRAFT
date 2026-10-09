@@ -36,7 +36,17 @@ public class ManbouCraftPlugin extends JavaPlugin implements Listener {
 
     @Override public void onEnable() {
         saveDefaultConfig();
-        long seconds = getConfig().getLong("respawn-protection-seconds", 60);
+        try {
+            if (jp.tsunamismp.manboucraft.config.ConfigurationUpgrade.upgradeFile(getDataFolder().toPath().resolve("config.yml"))) {
+                reloadConfig();
+                getLogger().info("Upgraded difficulty defaults to 0.2.0; original config preserved in config-backups/.");
+            }
+        } catch (IOException e) {
+            getLogger().log(java.util.logging.Level.SEVERE, "Cannot safely load/upgrade configuration", e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        long seconds = getConfig().getLong("respawn-protection-seconds", 10);
         if (seconds < 0 || seconds > 86400) throw new IllegalArgumentException("Invalid respawn protection");
         protectionMillis = seconds * 1000;
         for (DeathRule original : RuleRegistry.defaults().values()) {
@@ -54,11 +64,13 @@ public class ManbouCraftPlugin extends JavaPlugin implements Listener {
         catch (IOException e) { getLogger().log(java.util.logging.Level.SEVERE, "Rule state unavailable", e); Bukkit.getPluginManager().disablePlugin(this); return; }
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(listener, this);
+        ExtraRuleListener extras = new ExtraRuleListener(this);
+        Bukkit.getPluginManager().registerEvents(extras, this);
         MobListener mobs = new MobListener(this);
         Bukkit.getPluginManager().registerEvents(mobs, this);
         mobs.sweepLoaded();
         for (Player player : Bukkit.getOnlinePlayers()) protect(player);
-        Bukkit.getScheduler().runTaskTimer(this, listener::tick, 20, 20);
+        Bukkit.getScheduler().runTaskTimer(this, () -> { listener.tick(); extras.tick(); }, 20, 20);
         String grave = getConfig().getString("required-grave-plugin", "");
         if (grave.isBlank()) getLogger().warning("No grave provider name configured. ManbouCraft does not store items; configure required-grave-plugin to enforce its presence.");
         else if (!Bukkit.getPluginManager().isPluginEnabled(grave)) getLogger().warning("Special deaths paused until grave provider is enabled: " + grave);
@@ -68,6 +80,8 @@ public class ManbouCraftPlugin extends JavaPlugin implements Listener {
         if (statistics != null) statistics.save();
         if (listener != null) listener.saveState();
         pending.clear();
+        rules.clear();
+        gate.clear();
     }
     public boolean eligible(Player player) {
         return player.isOnline() && !player.isDead() && player.getHealth() > 0
@@ -102,6 +116,8 @@ public class ManbouCraftPlugin extends JavaPlugin implements Listener {
         DeathRule rule = rules.get(id);
         if (!graveAvailable()) return false;
         if (rule == null || !eligible(player)) return false;
+        if (getConfig().getBoolean("calm-protection-while-sneaking", true)
+                && player.isSneaking() && RuleRegistry.calmProtected(id)) return false;
         if (!gate.attempt(player.getUniqueId(), rule, now(), ThreadLocalRandom.current().nextDouble())) return false;
         executeDeath(player, rule);
         return true;

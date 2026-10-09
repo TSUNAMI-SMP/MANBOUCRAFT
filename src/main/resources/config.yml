@@ -2,162 +2,290 @@
 # Any positive final fall damage causes guaranteed death, even during respawn protection.
 fatal-fall-damage: true
 fatal-fall-message: "たった一段の油断で骨も心も折れた。"
-respawn-protection-seconds: 60
+respawn-protection-seconds: 10
+# Crouch to prevent fear/stress deaths; physical damage and unsafe food are not prevented.
+calm-protection-while-sneaking: true
 message-color: auto
 suppress-overworld-hostiles: true
 # Optional: exact Bukkit plugin name of your grave provider.
 # If set and the provider is disabled/missing, all special deaths pause.
 # Empty means external grave handling is assumed (not verified).
 required-grave-plugin: ""
-# Each of the 30 rules can be configured here. Missing settings use documented defaults.
+# Each of the 55 probabilistic rules can be configured here.
+config-version: 2
 rules:
   water_impact:
     enabled: true
-    probability: 0.2
-    interval-seconds: 30
+    probability: 1.0
+    interval-seconds: 8
     message: "水面が思ったより硬くて絶命した。"
   parasite:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.8
+    interval-seconds: 8
     message: "生魚のおまけの寄生虫に敗北した。"
   fishing_shock:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.35
+    interval-seconds: 8
     message: "釣り針を見て心が釣られてしまった。"
   temperature_shock:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.4
+    interval-seconds: 8
     message: "寒暖差に身体のアップデートが追いつかなかった。"
   diamond_joy:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.5
+    interval-seconds: 8
     message: "ダイヤの輝きに心臓が追いつかなかった。"
   bed_neck:
     enabled: true
-    probability: 0.03
-    interval-seconds: 30
+    probability: 0.02
+    interval-seconds: 8
     message: "寝違えが致命傷になった。"
   ender_pearl:
     enabled: true
-    probability: 0.1
-    interval-seconds: 30
+    probability: 0.65
+    interval-seconds: 8
     message: "ワープ先に魂を置いてきた。"
   sprinting:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.45
+    interval-seconds: 8
     message: "運動不足なのに張り切りすぎた。"
   egg_shock:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.75
+    interval-seconds: 8
     message: "卵の衝撃で人生が割れた。"
   snowball_shock:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.75
+    interval-seconds: 8
     message: "雪玉を隕石と勘違いした。"
   door_shock:
     enabled: true
     probability: 0.02
-    interval-seconds: 30
+    interval-seconds: 8
     message: "ドアの開閉に心の扉が耐えられなかった。"
   chest_anxiety:
     enabled: true
     probability: 0.02
-    interval-seconds: 30
+    interval-seconds: 8
     message: "チェストの中身への期待で息が止まった。"
   tool_break:
     enabled: true
-    probability: 0.1
-    interval-seconds: 30
+    probability: 0.9
+    interval-seconds: 8
     message: "道具と一緒に心も折れた。"
   flower_emotion:
     enabled: true
-    probability: 0.02
-    interval-seconds: 30
+    probability: 0.03
+    interval-seconds: 8
     message: "花の美しさに命を吸い取られた。"
   bell_shock:
     enabled: true
-    probability: 0.05
-    interval-seconds: 30
+    probability: 0.4
+    interval-seconds: 8
     message: "鐘の音が心臓の終了チャイムになった。"
   boat_sickness:
     enabled: true
-    probability: 0.03
-    interval-seconds: 30
+    probability: 0.02
+    interval-seconds: 8
     message: "乗船した瞬間に船酔いの限界を迎えた。"
   rain_stress:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.35
+    interval-seconds: 12
     message: "雨が怖すぎて干からびた。"
   thunder_fear:
     enabled: true
-    probability: 0.02
-    interval-seconds: 60
+    probability: 0.4
+    interval-seconds: 12
     message: "雷が鳴る前から心臓が落ちた。"
   player_contact:
     enabled: true
-    probability: 0.02
-    interval-seconds: 60
+    probability: 0.2
+    interval-seconds: 12
     message: "仲間との距離感を間違えて絶命した。"
   villager_stare:
     enabled: true
-    probability: 0.02
-    interval-seconds: 60
+    probability: 0.15
+    interval-seconds: 12
     message: "村人からの視線に耐えられなかった。"
   heavy_bag:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.05
+    interval-seconds: 12
     message: "荷物の重さを考えただけで潰れた。"
   dark_fear:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.3
+    interval-seconds: 12
     message: "暗闇に想像力を働かせすぎた。"
   height_fear:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.35
+    interval-seconds: 12
     message: "高所で足より先に心が滑った。"
   deep_water:
     enabled: true
-    probability: 0.02
-    interval-seconds: 60
+    probability: 0.65
+    interval-seconds: 12
     message: "足が届かない事実を受け止めきれなかった。"
   lava_fear:
     enabled: true
-    probability: 0.02
-    interval-seconds: 60
+    probability: 0.7
+    interval-seconds: 12
     message: "溶岩の熱意に負けた。"
   loneliness:
     enabled: true
-    probability: 0.005
-    interval-seconds: 60
+    probability: 0.001
+    interval-seconds: 12
     message: "ひとりの時間を満喫しすぎて消えた。"
   hunger_despair:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.45
+    interval-seconds: 12
     message: "空腹の未来に絶望した。"
   nether_panic:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.0015
+    interval-seconds: 12
     message: "ネザーの第一印象に耐えられなかった。"
   end_anxiety:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.0015
+    interval-seconds: 12
     message: "世界の果てで情緒も果てた。"
   chicken_stare:
     enabled: true
-    probability: 0.01
-    interval-seconds: 60
+    probability: 0.001
+    interval-seconds: 12
     message: "ニワトリに見下されて立ち直れなかった。"
+  hot_food:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 8
+    message: "温かいご飯に感動して体温調節を放棄した。"
+  sweet_overload:
+    enabled: true
+    probability: 0.03
+    interval-seconds: 8
+    message: "甘いものを食べて人生までとろけた。"
+  potion_confusion:
+    enabled: true
+    probability: 0.015
+    interval-seconds: 8
+    message: "謎の液体を飲んで説明書の大切さを知った。"
+  rotten_food:
+    enabled: true
+    probability: 0.95
+    interval-seconds: 8
+    message: "腐った肉に胃袋の敗北宣言を出された。"
+  suspicious_stew:
+    enabled: true
+    probability: 0.9
+    interval-seconds: 8
+    message: "怪しいシチューを信じた自分が一番怪しかった。"
+  milk_shock:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 8
+    message: "牛乳の白さに未来まで真っ白になった。"
+  bread_choke:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 8
+    message: "パンのふわふわに喉が対応していなかった。"
+  bow_recoil:
+    enabled: true
+    probability: 0.015
+    interval-seconds: 8
+    message: "弓の反動で心臓まで射出した。"
+  shield_shock:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 8
+    message: "盾で攻撃を防いだのに心は丸腰だった。"
+  bucket_panic:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 8
+    message: "バケツ一杯の責任を背負いきれなかった。"
+  craft_confusion:
+    enabled: true
+    probability: 0.005
+    interval-seconds: 8
+    message: "作業台の九マスで脳の容量を使い切った。"
+  furnace_heat:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 8
+    message: "かまどの熱気に生命の火を消された。"
+  anvil_stress:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 8
+    message: "金床の請求書を見て寿命を支払った。"
+  fishing_treasure:
+    enabled: true
+    probability: 0.03
+    interval-seconds: 8
+    message: "釣果を喜ぶ前に心臓が大物になった。"
+  item_drop:
+    enabled: true
+    probability: 0.005
+    interval-seconds: 8
+    message: "手放したアイテムを惜しんで魂まで手放した。"
+  hand_swap:
+    enabled: true
+    probability: 0.005
+    interval-seconds: 8
+    message: "持ち替えた手に脳の配線が追いつかなかった。"
+  jump_fear:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 8
+    message: "地面から離れた瞬間に人生からも離れた。"
+  sneak_cramp:
+    enabled: true
+    probability: 0.001
+    interval-seconds: 8
+    message: "しゃがんだだけで全身がつった。"
+  swim_shock:
+    enabled: true
+    probability: 0.35
+    interval-seconds: 8
+    message: "水に入って泳ぎ方より先に遺言を思い出した。"
+  burn_panic:
+    enabled: true
+    probability: 0.95
+    interval-seconds: 8
+    message: "熱いと気づいた瞬間に燃え尽きた。"
+  cactus_prick:
+    enabled: true
+    probability: 0.95
+    interval-seconds: 8
+    message: "小さなトゲに人生の急所を刺された。"
+  bee_fear:
+    enabled: true
+    probability: 0.55
+    interval-seconds: 12
+    message: "怒ったハチの羽音を葬送曲と勘違いした。"
+  wolf_fear:
+    enabled: true
+    probability: 0.55
+    interval-seconds: 12
+    message: "怒ったオオカミに心だけ先に食べられた。"
+  cat_judgment:
+    enabled: true
+    probability: 0.001
+    interval-seconds: 12
+    message: "ネコの無言の評価に耐えられなかった。"
+  bubble_panic:
+    enabled: true
+    probability: 0.6
+    interval-seconds: 12
+    message: "泡の勢いで魂まで浮き上がった。"

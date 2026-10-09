@@ -21,9 +21,9 @@ class PluginIntegrationTest {
     private ManbouCraftPlugin plugin;
     @BeforeEach void setup() { server = MockBukkit.mock(); plugin = MockBukkit.load(ManbouCraftPlugin.class); }
     @AfterEach void teardown() { MockBukkit.unmock(); }
-    @Test void pluginLoadsAllThirtyConfiguredRulesWithoutCommands() {
+    @Test void pluginLoadsAllFiftyFiveConfiguredRulesWithoutCommands() {
         assertTrue(plugin.isEnabled());
-        assertEquals(30, plugin.getConfig().getConfigurationSection("rules").getKeys(false).size());
+        assertEquals(55, plugin.getConfig().getConfigurationSection("rules").getKeys(false).size());
         assertTrue(plugin.getDescription().getCommands().isEmpty());
     }
     @Test void deathScreenAndStatisticsDoNotConsumeGraveDrops() {

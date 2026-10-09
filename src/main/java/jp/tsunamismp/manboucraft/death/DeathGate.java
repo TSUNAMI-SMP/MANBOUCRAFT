@@ -17,5 +17,6 @@ public final class DeathGate {
         playerAttempts.put(rule.id(), now + rule.intervalSeconds() * 1000);
         return random < rule.probability();
     }
+    public void clear() { protection.clear(); attempts.clear(); }
     public void forget(UUID player) { protection.remove(player); attempts.remove(player); }
 }
