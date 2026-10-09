@@ -1,0 +1,6 @@
+name: ManbouCraft
+version: '${version}'
+main: jp.tsunamismp.manboucraft.ManbouCraftPlugin
+api-version: '1.21.11'
+description: 普通のMinecraftで、マンボウ並みに虚弱なサバイバル。
+authors: [TSUNAMI-SMP]

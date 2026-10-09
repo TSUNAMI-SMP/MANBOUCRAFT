@@ -1,0 +1,160 @@
+# Probabilities are 0.0..1.0 per eligible event/interval, never per tick.
+respawn-protection-seconds: 60
+message-color: auto
+suppress-overworld-hostiles: true
+# Optional: exact Bukkit plugin name of your grave provider.
+# If set and the provider is disabled/missing, all special deaths pause.
+# Empty means external grave handling is assumed (not verified).
+required-grave-plugin: ""
+# Each of the 30 rules can be configured here. Missing settings use documented defaults.
+rules:
+  water_impact:
+    enabled: true
+    probability: 0.2
+    interval-seconds: 30
+    message: "水面が思ったより硬くて絶命した。"
+  parasite:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "生魚のおまけの寄生虫に敗北した。"
+  fishing_shock:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "釣り針を見て心が釣られてしまった。"
+  temperature_shock:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "寒暖差に身体のアップデートが追いつかなかった。"
+  diamond_joy:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "ダイヤの輝きに心臓が追いつかなかった。"
+  bed_neck:
+    enabled: true
+    probability: 0.03
+    interval-seconds: 30
+    message: "寝違えが致命傷になった。"
+  ender_pearl:
+    enabled: true
+    probability: 0.1
+    interval-seconds: 30
+    message: "ワープ先に魂を置いてきた。"
+  sprinting:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "運動不足なのに張り切りすぎた。"
+  egg_shock:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "卵の衝撃で人生が割れた。"
+  snowball_shock:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "雪玉を隕石と勘違いした。"
+  door_shock:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 30
+    message: "ドアの開閉に心の扉が耐えられなかった。"
+  chest_anxiety:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 30
+    message: "チェストの中身への期待で息が止まった。"
+  tool_break:
+    enabled: true
+    probability: 0.1
+    interval-seconds: 30
+    message: "道具と一緒に心も折れた。"
+  flower_emotion:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 30
+    message: "花の美しさに命を吸い取られた。"
+  bell_shock:
+    enabled: true
+    probability: 0.05
+    interval-seconds: 30
+    message: "鐘の音が心臓の終了チャイムになった。"
+  boat_sickness:
+    enabled: true
+    probability: 0.03
+    interval-seconds: 30
+    message: "乗船した瞬間に船酔いの限界を迎えた。"
+  rain_stress:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "雨が怖すぎて干からびた。"
+  thunder_fear:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 60
+    message: "雷が鳴る前から心臓が落ちた。"
+  player_contact:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 60
+    message: "仲間との距離感を間違えて絶命した。"
+  villager_stare:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 60
+    message: "村人からの視線に耐えられなかった。"
+  heavy_bag:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "荷物の重さを考えただけで潰れた。"
+  dark_fear:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "暗闇に想像力を働かせすぎた。"
+  height_fear:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "高所で足より先に心が滑った。"
+  deep_water:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 60
+    message: "足が届かない事実を受け止めきれなかった。"
+  lava_fear:
+    enabled: true
+    probability: 0.02
+    interval-seconds: 60
+    message: "溶岩の熱意に負けた。"
+  loneliness:
+    enabled: true
+    probability: 0.005
+    interval-seconds: 60
+    message: "ひとりの時間を満喫しすぎて消えた。"
+  hunger_despair:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "空腹の未来に絶望した。"
+  nether_panic:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "ネザーの第一印象に耐えられなかった。"
+  end_anxiety:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "世界の果てで情緒も果てた。"
+  chicken_stare:
+    enabled: true
+    probability: 0.01
+    interval-seconds: 60
+    message: "ニワトリに見下されて立ち直れなかった。"
